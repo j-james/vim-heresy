@@ -147,9 +147,13 @@ function! g:SetShortcuts()
     " Move the current / selected line(s) up
     inoremap <silent> <C-Up> <C-O>:m -2<CR>
     snoremap <silent> <C-Up> <C-O>:m '<-2<CR>gv=gv<C-G>
+    inoremap <silent> <C-K> <C-O>:m -2<CR>
+    snoremap <silent> <C-K> <C-O>:m '<-2<CR>gv=gv<C-G>
     " Move the current / selected line(s) down
     inoremap <silent> <C-Down> <C-O>:m +1<CR>
     snoremap <silent> <C-Down> <C-O>:m '>+1<CR>gv=gv<C-G>
+    inoremap <silent> <C-J> <C-O>:m +1<CR>
+    snoremap <silent> <C-J> <C-O>:m '>+1<CR>gv=gv<C-G>
   endif
 
   if g:heresy_tab_shortcuts == 1
