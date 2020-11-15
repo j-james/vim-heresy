@@ -17,6 +17,7 @@ let s:settings = {
   \ 'undo_shortcuts': 1,
   \ 'find_shortcuts': 1,
   \ 'line_shortcuts': 1,
+  \ 'tab_shortcuts': 1,
   \ 'pane_shortcuts': 1,
   \ 'indentation_shortcuts': 1,
   \ 'navigation_fixes': 1,

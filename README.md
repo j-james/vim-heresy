@@ -66,6 +66,11 @@ One further common problem is that `tmux` can change key combination behaviour, 
   * `F3` and `SHIFT+F3`: Find next and previous occurences.
   * `CTRL+H`: Find and replace. `[FIND]` and `[REPLACE]` are prepopulated.
 
+#### Tab navigation
+  * `CTRL+T`: Open a new tab.
+  * `CTRL+TAB`: Cycle to the next tab.
+  * `CTRL+SHIFT+T`: Cycle to the previous tab.
+
 #### Undoing
   * `CTRL+Z` or `CTRL+U`: Undo.
   * `CTRL+Y`: Redo.
@@ -101,6 +106,7 @@ let g:heresy_copypaste_shortcuts = 1
 let g:heresy_undo_shortcuts = 1
 let g:heresy_find_shortcuts = 1
 let g:heresy_line_shortcuts = 1
+let g:heresy_tab_shortcuts = 1
 let g:heresy_pane_shortcuts = 1
 let g:heresy_indentation_shortcuts = 1
 

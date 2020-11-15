@@ -152,6 +152,18 @@ function! g:SetShortcuts()
     snoremap <silent> <C-Down> <C-O>:m '>+1<CR>gv=gv<C-G>
   endif
 
+  if g:heresy_tab_shortcuts == 1
+    " Open a new tab
+    inoremap <silent> <C-T> <C-O>:tabnew<CR>
+    snoremap <silent> <C-T> <C-O>:tabnew<CR>
+    " Cycle through tabs
+    inoremap <silent> <C-Tab> <C-O>:tabnext<CR>
+    snoremap <silent> <C-Tab> <C-O>:tabnext<CR>
+    " Cycle backwards through tabs
+    inoremap <silent> <C-S-Tab> <C-O>:tabprevious<CR>
+    snoremap <silent> <C-S-Tab> <C-O>:tabprevious<CR>
+  endif
+
   if g:heresy_pane_shortcuts == 1
     " Move between splits, panes, windows, etc and close them
     inoremap <silent> <M-Left>  <C-O><C-W><Left>
