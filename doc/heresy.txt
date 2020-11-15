@@ -1,25 +1,25 @@
-*novim_mode.txt* Vim keybindings for 'conventional' editor behaviour
+*heresy.txt* Vim keybindings for 'conventional' editor behaviour
 
-                        NOVIM MODE DOCUMENTATION
-
-==============================================================================
-CONTENTS                                                 |novim-mode-contents|
-
-    Introduction ................................... |novim-mode-introduction|
-    Installation ................................... |novim-mode-installation|
-    Usage ................................................. |novim-mode-usage|
-    Keybindings ..................................... |novim-mode-keybindings|
-    Interoperability ........................... |novim-mode-interoperability|
-    Known Issues ................................... |novim-mode-known-issues|
-    References ................................. |novim-mode-known-references|
+                        VIM-HERESY DOCUMENTATION
 
 ==============================================================================
-1. Introduction                        *novim-mode* *novim-mode-introduction*
+CONTENTS                                                 |vim-heresy-contents|
 
-Novim-mode makes Vim behave like a 'conventional', non-modal editor. Where key
+    Introduction ................................... |vim-heresy-introduction|
+    Installation ................................... |vim-heresy-installation|
+    Usage ................................................. |vim-heresy-usage|
+    Keybindings ..................................... |vim-heresy-keybindings|
+    Interoperability ........................... |vim-heresy-interoperability|
+    Known Issues ................................... |vim-heresy-known-issues|
+    References ................................. |vim-heresy-known-references|
+
+==============================================================================
+1. Introduction                        *vim-heresy* *vim-heresy-introduction*
+
+vim-heresy makes Vim behave like a 'conventional', non-modal editor. Where key
 presses default to inserting text, `CTRL+S` saves the file and so on. In the
 same way that 'vim-mode' plugins are available for other editors to enable
-Vim-style keybindings, so too is 'novim-mode' available in Vim to enable
+Vim-style keybindings, so too is 'vim-heresy' available in Vim to enable
 'traditional'-style keybindings.
 
 Vim is one of the most battle-tested, ubiquitous and extensible editors
@@ -28,15 +28,15 @@ then you will be able to instantly benefit from all that is valuable about
 Vim without the learning curve of Normal Mode.
 
 ==============================================================================
-2. Installation                                     *novim-mode-installation*
+2. Installation                                     *vim-heresy-installation*
 
 Use your favourite plugin manager, eg, for vim-plug; >
 
-  Plug 'tombh/novim-mode'`
+  Plug 'j-james/vim-heresy'`
 <
 
 ==============================================================================
-3. Usage                                                   *novim-mode-usage*
+3. Usage                                                   *vim-heresy-usage*
 
 Most keybindings should work as you might expect from, say Atom or Sublime
 Text; `SHIFT+ARROW` to select and `CTRL+C/V` to copy/paste. But don't expect
@@ -56,13 +56,13 @@ like [vim-buftabline](https://github.com/ap/vim-buftabline) to give a familiar
 list of open files along the top of the editor.
 
 ==============================================================================
-4. Keybindings                                       *novim-mode-keybindings*
+4. Keybindings                                       *vim-heresy-keybindings*
 
 Vim in the terminal
 
-Both Vim and Neovim can be used both as GUI apps and in the terminal. However, original Vim in the terminal has problems with many key combinations - essentially most combinations that are not a plain `CTRL+KEY`. To get around this you can use the `vim-fixkey`[2] plugin. It does have some caveats, which you can read about in its docs, but basically it just makes recording macros a little bit more tricky because of the timing between `Esc` combinations. `vim-fixkey` also doesn't enable `ALT+non-alphanumeric` combinations, but `novim-mode` usually has alphanumeric siblings which you can still use. However, if you are not particularly tied to Vim, you can use Neovim in the terminal which has much better support for key combinations and will work without the  need for `vim-fixkey`. Note that the GUI versions of both Vim and Neovim also don't have these key combination problems.
+Both Vim and Neovim can be used both as GUI apps and in the terminal. However, original Vim in the terminal has problems with many key combinations - essentially most combinations that are not a plain `CTRL+KEY`. To get around this you can use the `vim-fixkey`[2] plugin. It does have some caveats, which you can read about in its docs, but basically it just makes recording macros a little bit more tricky because of the timing between `Esc` combinations. `vim-fixkey` also doesn't enable `ALT+non-alphanumeric` combinations, but `vim-heresy` usually has alphanumeric siblings which you can still use. However, if you are not particularly tied to Vim, you can use Neovim in the terminal which has much better support for key combinations and will work without the  need for `vim-fixkey`. Note that the GUI versions of both Vim and Neovim also don't have these key combination problems.
 
-Most terminal emulators (ie. `xterm`, `rxvt`, `PuTTY`, etc) default to intercepting `CTRL+S` to suspend output (`CTRL+Q` unsuspends if you're wondering), if so you will need to disable this behaviour to use `novim-mode`'s shortcuts for saving and quitting. Most often you simply need to add the following to your `~/.bashrc`, `~/.zshrc` or similar: >
+Most terminal emulators (ie. `xterm`, `rxvt`, `PuTTY`, etc) default to intercepting `CTRL+S` to suspend output (`CTRL+Q` unsuspends if you're wondering), if so you will need to disable this behaviour to use `vim-heresy`'s shortcuts for saving and quitting. Most often you simply need to add the following to your `~/.bashrc`, `~/.zshrc` or similar: >
 
 stty -ixon
 stty stop undef
@@ -120,7 +120,7 @@ Other text manipulation tricks
 does not recognise the difference between cases when using `CTRL` combinations
 and documenting in uppercase implies something of this distinction.
 ==============================================================================
-5. Interoperability                             *novim-mode-interoperability*
+5. Interoperability                             *vim-heresy-interoperability*
 
 When adding a new binding of your own that needs Normal mode, you should use
 `<C-O>` before the targeted command, for example; >
@@ -132,9 +132,9 @@ When adding a new binding of your own that needs Normal mode, you should use
 Overriding or disabling shortcuts in this plugin can be done in several
 ways. The simplest way is to use: >
 
-  let g:novim_mode_use_shortcuts = 0
+  let g:heresy_use_shortcuts = 0
   inoremap ... custom mapping ...
-  call novim_mode#StartNoVimMode()
+  call heresy#StartHeresy()
 <
 
 Alternatively you can unmap a mapping using commands such as `nunmap`,
@@ -144,21 +144,21 @@ Lastly shorcuts are also grouped roughly under the headings described above,
 so you may be able to disable one of the
 following: >
 
-  let g:novim_mode_use_general_app_shortcuts = 1
-  let g:novim_mode_use_pane_controls = 1
-  let g:novim_mode_use_copypasting = 1
-  let g:novim_mode_use_indenting = 1
-  let g:novim_mode_use_finding = 1
-  let g:novim_mode_use_undoing = 1
-  let g:novim_mode_use_text_tricks = 1
+  let g:heresy_use_general_app_shortcuts = 1
+  let g:heresy_use_pane_controls = 1
+  let g:heresy_use_copypasting = 1
+  let g:heresy_use_indenting = 1
+  let g:heresy_use_finding = 1
+  let g:heresy_use_undoing = 1
+  let g:heresy_use_text_tricks = 1
 
   " Small fixes to HOME and PAGEUP behaviour
-  let g:novim_mode_use_editor_fixes = 1
+  let g:heresy_use_editor_fixes = 1
   " Allows scrolling through wrapped lines one visual line at a time
-  let g:novim_mode_use_better_wrap_navigation = 1
+  let g:heresy_use_better_wrap_navigation = 1
 <
 ==============================================================================
-6. Known Issues                                     *novim-mode-known-issues*
+6. Known Issues                                     *vim-heresy-known-issues*
 
   * There seems to be a bug where only `SHIFT+TAB` and not `TAB` works for
     indenting during selection mode. Again this may be fixed by simulating
@@ -169,7 +169,7 @@ following: >
     Again this is a throwback to Vim's days as a pure terminal application.
 
 ==============================================================================
-7. References                                         *novim-mode-references*
+7. References                                         *vim-heresy-references*
 
 [1] https://github.com/terryma/vim-multiple-cursors
 [2] https://github.com/drmikehenry/vim-fixkey

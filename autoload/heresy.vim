@@ -75,13 +75,13 @@ function! s:InsertAndSelectionBehaviour()
 endfunction
 
 " All shortcuts in one function so they can be more easily controlled.
-function! g:SetNoVimModeShortcuts()
+function! g:SetHeresyShortcuts()
   " Basic interactions with the editor
-  if g:novim_mode_use_general_app_shortcuts == 1
+  if g:heresy_use_app_shortcuts == 1
     " CTRL+q to completely exit vim
-    inoremap <silent> <C-Q> <C-O>:call novim_mode#ExitVim()<CR>
-    snoremap <silent> <C-Q> <C-O>:call novim_mode#ExitVim()<CR>
-    nnoremap <silent> <C-Q> :call novim_mode#ExitVim()<CR>
+    inoremap <silent> <C-Q> <C-O>:call heresy#ExitVim()<CR>
+    snoremap <silent> <C-Q> <C-O>:call heresy#ExitVim()<CR>
+    nnoremap <silent> <C-Q> :call heresy#ExitVim()<CR>
 
     " CTRL+n for new file
     inoremap <C-N> <C-O>:edit<Space>
@@ -92,7 +92,7 @@ function! g:SetNoVimModeShortcuts()
     inoremap <silent> <C-S> <C-O>:update<CR>
 
     " Goto line number
-    inoremap <C-G> <C-O>:call novim_mode#GotoLine()<CR>
+    inoremap <C-G> <C-O>:call heresy#GotoLine()<CR>
 
     " ALT+; for command prompt
     inoremap <M-;> <C-O>:
@@ -108,7 +108,7 @@ function! g:SetNoVimModeShortcuts()
   endif
 
   " General fixes to editor behaviour
-  if g:novim_mode_use_editor_fixes == 1
+  if g:heresy_use_editor_fixes == 1
     " Fix HOME to go back to the first non-whitespace character of the line.
     inoremap <silent> <Home> <C-O>^
     " The same but for selection behaviour
@@ -116,11 +116,11 @@ function! g:SetNoVimModeShortcuts()
     snoremap <silent> <S-Home> <C-O>^
 
     " Tweaks PageUp behaviour to get cursor to first line on top page
-    inoremap <silent> <PageUp> <C-O>:call novim_mode#PageUp()<CR>
+    inoremap <silent> <PageUp> <C-O>:call heresy#PageUp()<CR>
   endif
 
   " Move between splits, panes, windows, etc and close them
-  if g:novim_mode_use_pane_controls == 1
+  if g:heresy_use_pane_controls == 1
     inoremap <silent> <M-Left>  <C-O><C-W><Left>
     snoremap <silent> <M-Left>  <Esc><C-W><Left>
     nnoremap <silent> <M-Left>  <C-W><Left>
@@ -138,22 +138,22 @@ function! g:SetNoVimModeShortcuts()
     set hidden
 
     " CTRL+w to delete current pane-like things.
-    inoremap <silent> <C-W> <C-O>:call novim_mode#ClosePane()<CR>
-    snoremap <silent> <C-W> <C-O>:call novim_mode#ClosePane()<CR>
-    nnoremap <silent> <C-W> :call novim_mode#ClosePane()<CR>
+    inoremap <silent> <C-W> <C-O>:call heresy#ClosePane()<CR>
+    snoremap <silent> <C-W> <C-O>:call heresy#ClosePane()<CR>
+    nnoremap <silent> <C-W> :call heresy#ClosePane()<CR>
   end
 
   " Selecting, copy, paste, etc
-  if g:novim_mode_use_copypasting == 1
+  if g:heresy_use_copypasting == 1
     " One of those curious features of Vim: without `onemore` when pasting
     " at the end of a line, pasted text gets put *before* the cursor.
     set virtualedit=onemore
     " NB. All these use the system clipboard.
-    inoremap <C-V> <C-O>:call novim_mode#Paste()<CR>
+    inoremap <C-V> <C-O>:call heresy#Paste()<CR>
     " The odd <Space><Backspace> here is because one-off Normal Mode commands
     " don't seem to work as expected when some text is selected. Also just
     " using <Backspace> on its own seems to cause weird behaviour too.
-    snoremap <C-V> <Space><Backspace><C-O>:call novim_mode#Paste()<CR>
+    snoremap <C-V> <Space><Backspace><C-O>:call heresy#Paste()<CR>
     cnoremap <C-V> <C-R>"
     snoremap <C-C> <C-O>"+ygv
     inoremap <C-C> <C-O>"+Y
@@ -172,7 +172,7 @@ function! g:SetNoVimModeShortcuts()
   endif
 
   " Indenting
-  if g:novim_mode_use_indenting == 1
+  if g:heresy_use_indenting == 1
     " TODO: In Neovim TAB doesn't work in mswin selection mode, but SHIFT+TAB does??
     snoremap <Tab> <C-O>>gv
     inoremap <M-]> <C-T>
@@ -183,7 +183,7 @@ function! g:SetNoVimModeShortcuts()
     snoremap <M-[> <C-O><gv
   endif
 
-  if g:novim_mode_use_finding == 1
+  if g:heresy_use_finding == 1
     " Find
     inoremap <C-F> <C-O>/
     " Find selected word under cursor
@@ -197,7 +197,7 @@ function! g:SetNoVimModeShortcuts()
   endif
 
   " Undo/redo
-  if g:novim_mode_use_undoing == 1
+  if g:heresy_use_undoing == 1
     " Use <M-o><C-Z> for native terminal backgrounding.
     " The <Esc>s used in the `snoremap` commands seem to prevent the selection
     " process itself being put in the undo history - so now the undo actually undoes
@@ -215,7 +215,7 @@ function! g:SetNoVimModeShortcuts()
 
   " Useful, but not necessarily core or conventional, shortcuts for manipulating
   " text.
-  if g:novim_mode_use_text_tricks == 1
+  if g:heresy_use_text_tricks == 1
     " CTRL+ALTt+k deletes the current line under the cursor
     " TODO: Doesn't work in terminal vim, even with vim-fixkey
     inoremap <silent> <C-M-K> <C-O>"_dd
@@ -282,7 +282,7 @@ endfunction
 
 " Try to intuitively and intelligently close things like buffers, splits,
 " panes, quicklist, etc, basically anything that looks like a pane.
-function! novim_mode#ClosePane()
+function! heresy#ClosePane()
   if s:IsEditableBuffer() == 1
     " TODO: These aren't actually formally associated with a buffer, although
     "       conceptually they often are (eg; linting errors, file search).
@@ -305,20 +305,20 @@ function! novim_mode#ClosePane()
 endfunction
 
 " TODO: Mention any unsaved buffers
-function! novim_mode#ExitVim()
+function! heresy#ExitVim()
   let l:confirmed = confirm('Do you really want to quit Vim?', "&Yes\n&No", 2)
   if l:confirmed == 1
     quitall!
   endif
 endfunction
 
-function! novim_mode#GotoLine()
+function! heresy#GotoLine()
   let l:line_number = input('Goto line: ')
   execute line_number
 endfunction
 
 " Just to get PAGEUP to move to the first line when on the first page.
-function! novim_mode#PageUp()
+function! heresy#PageUp()
   " If current line is higher than the size of the buffer
   if line(".") > s:BufferLines()
     " Normal PageUp
@@ -329,21 +329,21 @@ function! novim_mode#PageUp()
   endif
 endfunction
 
-function! novim_mode#Paste()
+function! heresy#Paste()
   set paste
   execute 'normal! "+P'
   set nopaste
   call feedkeys("\<Right>")
 endfunction
 
-function! g:novim_mode#StartNoVimMode()
+function! g:heresy#StartHeresy()
   call s:InsertAndSelectionBehaviour()
 
-  if g:novim_mode_use_better_wrap_navigation == 1
+  if g:heresy_use_better_wrap_navigation == 1
     call s:SetWrappedTextNavigation()
   endif
 
-  if g:novim_mode_use_shortcuts == 1
-    call g:SetNoVimModeShortcuts()
+  if g:heresy_use_shortcuts == 1
+    call g:SetHeresyShortcuts()
   endif
 endfunction

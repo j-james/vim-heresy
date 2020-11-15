@@ -1,5 +1,5 @@
-" novim_mode.vim - 'Conventional' editor keybindings plugin
-" Author:       tombh
+" heresy.vim - Make Vim behave more like a "normal" editor
+" Author:       j-james
 " Version:      0.1
 "
 " ============================================================================
@@ -29,7 +29,7 @@ function! s:init_settings(settings)
     elseif type(value) == 1
       let sub = '"%s"'
     endif
-    let fmt = printf("let g:novim_mode_%%s=get(g:, 'novim_mode_%%s', %s)",
+    let fmt = printf("let g:heresy_%%s=get(g:, 'heresy_%%s', %s)",
           \ sub)
     exec printf(fmt, key, key, value)
   endfor
@@ -38,13 +38,13 @@ endfunction
 call s:init_settings(s:settings)
 
 if has('timers') == 0
-  echo "Novim-mode: Your Vim version (Vim <7.5 or Neovim <0.1.5) doesn't "
+  echo "vim-heresy: Your Vim version (Vim <7.5 or Neovim <0.1.5) doesn't "
   echo "support `timer()`, which causes a bug where Insert Mode is "
-  echo "innapropriately set for some panes."
+  echo "inappropriately set for some panes."
 endif
 
 " Plugin entry point
-call g:novim_mode#StartNoVimMode()
+call g:heresy#StartHeresy()
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

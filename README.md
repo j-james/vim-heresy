@@ -1,4 +1,4 @@
-#  No Vim Keybindings Mode [![Build Status](https://travis-ci.org/tombh/novim-mode.svg?branch=master)](https://travis-ci.org/tombh/novim-mode)
+# heresy.vim
 
 Some, indeed many, may say this is counter-productive or even sacrilegious. But Vim is a lot more than just a keybinding paradigm; firstly it has one of the richest plugin ecosystems of any editor, but also it is a -if not *the* most- ubiquitous text editor that's been battle tested for over 25 years. There are more reasons to use it than merely its famous shortcut vocabulary.
 
@@ -6,13 +6,11 @@ This plugin is an attempt to expose everything else about Vim without the overhe
 
 Vim itself already has support for something similar in its optional [`mswin.vim`](https://github.com/vim/vim/blob/master/runtime/mswin.vim) config file. However it still assumes the necessity of Normal Mode and such heritage as `SHIFT+INSERT`-style combinations. This plugin however, attempts to avoid Normal Mode unless absolutely necessary, say for interacting with the NERDTree buffer, wherein Insert Mode has no purpose.
 
-The name `novim-mode` is a nod to the prevalence of 'vim-mode' plugins and extensions available in environments outside the editor, such as web browsers. In the same way that the love of Vim has led to efforts to export it elsewhere, 'novim-mode' is the love of 'conventional' editing imported into Vim.
-
 ## Installation
 
 Use your favourite plugin manager, eg, for vim-plug;
 
-`Plug 'tombh/novim-mode'`
+`Plug 'j-james/vim-heresy'`
 
 Note that Vim before v7.5 and Neovim before v0.1.5 have a bug where Insert Mode is inappropriately set for some panes.
 
@@ -25,9 +23,9 @@ If you are new to Vim, then perhaps the only remaining confusion after installin
 ### Keybindings
 
 #### Vim in the terminal
-Both Vim and Neovim can be used both as GUI apps and in the terminal. However, original Vim in the terminal has problems with many key combinations - essentially most combinations that are not a plain `CTRL+KEY`. To get around this you can use the [vim-fixkey](https://github.com/drmikehenry/vim-fixkey) plugin. It does have some caveats, which you can read about in its docs, but basically it just makes recording macros a little bit more tricky because of the timing between `Esc` combinations. `vim-fixkey` also doesn't enable `ALT+non-alphanumeric` combinations, but `novim-mode` usually has alphanumeric siblings which you can still use. However, if you are not particularly tied to Vim, you can use Neovim in the terminal which has much better support for key combinations and will work without the  need for `vim-fixkey`. Note that the GUI versions of both Vim and Neovim also don't have these key combination problems.
+Both Vim and Neovim can be used both as GUI apps and in the terminal. However, original Vim in the terminal has problems with many key combinations - essentially most combinations that are not a plain `CTRL+KEY`. To get around this you can use the [vim-fixkey](https://github.com/drmikehenry/vim-fixkey) plugin. It does have some caveats, which you can read about in its docs, but basically it just makes recording macros a little bit more tricky because of the timing between `Esc` combinations. `vim-fixkey` also doesn't enable `ALT+non-alphanumeric` combinations, but `vim-heresy` usually has alphanumeric siblings which you can still use. However, if you are not particularly tied to Vim, you can use Neovim in the terminal which has much better support for key combinations and will work without the  need for `vim-fixkey`. Note that the GUI versions of both Vim and Neovim also don't have these key combination problems.
 
-Most terminal emulators (ie. `xterm`, `rxvt`, `PuTTY`, etc) default to intercepting `CTRL+S` to suspend output (`CTRL+Q` unsuspends if you're wondering), if so you will need to disable this behaviour to use `novim-mode`'s shortcuts for saving and quitting. Most often you simply need to add the following to your `~/.bashrc`, `~/.zshrc` or similar:
+Most terminal emulators (ie. `xterm`, `rxvt`, `PuTTY`, etc) default to intercepting `CTRL+S` to suspend output (`CTRL+Q` unsuspends if you're wondering), if so you will need to disable this behaviour to use `vim-heresy`'s shortcuts for saving and quitting. Most often you simply need to add the following to your `~/.bashrc`, `~/.zshrc` or similar:
 
 ```sh
 stty -ixon
@@ -91,25 +89,25 @@ inoremap <C-P> <C-O>:CtrlP<CR>
 
 Overriding or disabling shortcuts in this plugin can be done in several ways. The simplest way is to use:
 ```vim
-let g:novim_mode_use_shortcuts = 0
+let g:heresy_use_shortcuts = 0
 inoremap ... custom mapping ...
-call novim_mode#StartNoVimMode()
+call heresy#StartHeresy()
 ```
 
 Shortcuts are also grouped roughly under the headings described above, so you may be able to disable one of the following:
 ```vim
-let g:novim_mode_use_general_app_shortcuts = 1
-let g:novim_mode_use_pane_controls = 1
-let g:novim_mode_use_copypasting = 1
-let g:novim_mode_use_indenting = 1
-let g:novim_mode_use_finding = 1
-let g:novim_mode_use_undoing = 1
-let g:novim_mode_use_text_tricks = 1
+let g:heresy_use_general_app_shortcuts = 1
+let g:heresy_use_pane_controls = 1
+let g:heresy_use_copypasting = 1
+let g:heresy_use_indenting = 1
+let g:heresy_use_finding = 1
+let g:heresy_use_undoing = 1
+let g:heresy_use_text_tricks = 1
 
 " Small fixes to HOME and PAGEUP behaviour
-let g:novim_mode_use_editor_fixes = 1
+let g:heresy_use_editor_fixes = 1
 " Allows scrolling through wrapped lines one visual line at a time
-let g:novim_mode_use_better_wrap_navigation = 1
+let g:heresy_use_better_wrap_navigation = 1
 ```
 
 Lastly you can unmap a mapping using commands such as `nunmap`, `iunmap`, `sunmap`, etc.
@@ -119,4 +117,3 @@ Lastly you can unmap a mapping using commands such as `nunmap`, `iunmap`, `sunma
   * In Neovim there seems to be a bug where only `SHIFT+TAB` and not `TAB` works for indenting during selection mode.
   * Mapping `<CTRL+M>` internally means mapping `<RETURN>`. This is a throwback to Vim's days as a pure terminal application.
   * `CTRL+BACKSPACE` internally represents `<CTRL+H>`, which can be annoying. Again this is a throwback to Vim's days as a pure terminal application.
-
