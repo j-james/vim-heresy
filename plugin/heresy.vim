@@ -15,6 +15,7 @@ let s:settings = {
   \ 'app_shortcuts': 1,
   \ 'copypaste_shortcuts': 1,
   \ 'undo_shortcuts': 1,
+  \ 'plugin_shortcuts': 1,
   \ 'find_shortcuts': 1,
   \ 'line_shortcuts': 1,
   \ 'tab_shortcuts': 1,

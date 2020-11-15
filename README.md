@@ -66,14 +66,17 @@ One further common problem is that `tmux` can change key combination behaviour, 
   * `F3` and `SHIFT+F3`: Find next and previous occurences.
   * `CTRL+H`: Find and replace. `[FIND]` and `[REPLACE]` are prepopulated.
 
+#### Undoing
+  * `CTRL+Z` or `CTRL+U`: Undo.
+  * `CTRL+Y`: Redo.
+
 #### Tab navigation
   * `CTRL+T`: Open a new tab.
   * `CTRL+TAB`: Cycle to the next tab.
   * `CTRL+SHIFT+T`: Cycle to the previous tab.
 
-#### Undoing
-  * `CTRL+Z` or `CTRL+U`: Undo.
-  * `CTRL+Y`: Redo.
+#### Plugin updating
+  * `CTRL+U`: Update installed plugins
 
 #### Other text manipulation tricks
   * `CTRL+LEFT/RIGHT`: Move cursor per word (works in selection as well).

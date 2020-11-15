@@ -126,6 +126,14 @@ function! g:SetShortcuts()
     snoremap <silent> <C-Y> <Esc><C-O><C-R>
   endif
 
+  if g:heresy_plugin_shortcuts == 1
+    " Update plugins
+    inoremap <C-U> <C-O>:PlugUpdate<CR>
+    " Install plugins
+    " TODO: The tab key outputs CTRL+I instead of Tab -_-
+    " inoremap <C-I> <C-O>:PlugInstall<CR>
+  endif
+
   if g:heresy_find_shortcuts == 1
     " Find
     inoremap <C-F> <C-O>/
