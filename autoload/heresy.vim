@@ -75,52 +75,85 @@ function! s:InsertAndSelectionBehaviour()
 endfunction
 
 " All shortcuts in one function so they can be more easily controlled.
-function! g:SetHeresyShortcuts()
-  " Basic interactions with the editor
-  if g:heresy_use_app_shortcuts == 1
-    " CTRL+q to completely exit vim
-    inoremap <silent> <C-Q> <C-O>:call heresy#ExitVim()<CR>
-    snoremap <silent> <C-Q> <C-O>:call heresy#ExitVim()<CR>
-    nnoremap <silent> <C-Q> :call heresy#ExitVim()<CR>
+function! g:SetShortcuts()
 
-    " CTRL+n for new file
-    inoremap <C-N> <C-O>:edit<Space>
-    " CTRL+o to open file
-    " TODO: hook into netrw or NERDTree
-    inoremap <C-O> <C-O>:edit<Space>
-    " CTRL+s saves
+  if g:heresy_app_shortcuts == 1
+    " Completely exit vim
+    inoremap <silent> <C-Q> <C-O>:call heresy#CloseVim()<CR>
+    snoremap <silent> <C-Q> <C-O>:call heresy#CloseVim()<CR>
+    nnoremap <silent> <C-Q> :call heresy#CloseVim()<CR>
+    " Close current pane-like things.
+    inoremap <silent> <C-W> <C-O>:call heresy#ClosePane()<CR>
+    snoremap <silent> <C-W> <C-O>:call heresy#ClosePane()<CR>
+    nnoremap <silent> <C-W> :call heresy#ClosePane()<CR>
+    " Save file
     inoremap <silent> <C-S> <C-O>:update<CR>
-
-    " Goto line number
-    inoremap <C-G> <C-O>:call heresy#GotoLine()<CR>
-
-    " ALT+; for command prompt
-    inoremap <M-;> <C-O>:
-    snoremap <M-;> <C-O>:
-    inoremap <M-c> <C-O>:
-    snoremap <M-c> <C-O>:
-    nnoremap <M-;> :
-    nnoremap <M-c> :
-
-    " <ALT+o> replaces native <C-O> for one-time normal mode commands.
-    inoremap <M-o> <C-O>
-    snoremap <M-o> <C-O>
+    " New file
+    inoremap <C-N> <C-O>:edit<Space>
+    " Open file (TODO: hook into netrw or NERDTree)
+    inoremap <C-O> <C-O>:edit<Space>
   endif
 
-  " General fixes to editor behaviour
-  if g:heresy_use_editor_fixes == 1
-    " Fix HOME to go back to the first non-whitespace character of the line.
-    inoremap <silent> <Home> <C-O>^
-    " The same but for selection behaviour
-    inoremap <silent> <S-Home> <S-Left><C-G><C-O>^
-    snoremap <silent> <S-Home> <C-O>^
-
-    " Tweaks PageUp behaviour to get cursor to first line on top page
-    inoremap <silent> <PageUp> <C-O>:call heresy#PageUp()<CR>
+  if g:heresy_copypaste_shortcuts == 1
+    " One of those curious features of Vim: without `onemore` when pasting
+    " at the end of a line, pasted text gets put *before* the cursor.
+    set virtualedit=onemore
+    " Cut selected text / current line
+    snoremap <C-X> <C-O>"+xi
+    inoremap <C-X> <C-O>"+dd
+    " Copy selected text / current line
+    snoremap <C-C> <C-O>"+ygv
+    inoremap <C-C> <C-O>"+Y
+    " Paste system clipboard
+    inoremap <C-V> <C-O>:call heresy#Paste()<CR>
+    " The odd <Space><Backspace> here is because one-off Normal Mode commands
+    " don't seem to work as expected when some text is selected. Also just
+    " using <Backspace> on its own seems to cause weird behaviour too.
+    snoremap <C-V> <Space><Backspace><C-O>:call heresy#Paste()<CR>
+    cnoremap <C-V> <C-R>"
   endif
 
-  " Move between splits, panes, windows, etc and close them
-  if g:heresy_use_pane_controls == 1
+  " Use <M-o><C-Z> for native terminal backgrounding.
+  " The <Esc>s used in the `snoremap` commands seem to prevent the selection
+  " process itself being put in the undo history - so now the undo actually
+  " undoes the last *text* activity.
+  if g:heresy_undo_shortcuts == 1
+    " Undo
+    inoremap <silent> <C-Z> <C-O>u
+    snoremap <silent> <C-Z> <Esc><C-O>u
+    " Redo
+    inoremap <silent> <C-Y> <C-O><C-R>
+    snoremap <silent> <C-Y> <Esc><C-O><C-R>
+  endif
+
+  if g:heresy_find_shortcuts == 1
+    " Find
+    inoremap <C-F> <C-O>/
+    " Find selected word under cursor
+    snoremap <C-F> <C-O>y/<C-R>"<CR>
+    " Find next
+    " inoremap <F3> <C-O>n
+    " Find previous
+    " inoremap <S-F3> <C-O>N
+    " Find and replace
+    inoremap <C-G> <C-O>:%s/[FIND]/[REPLACE]/g
+    " Jump to a line
+    " inoremap <C-?> <C-O>:call heresy#GotoLine()<CR>
+    " Multi-select VSCode style
+    " snoremap <C-D> ???
+  endif
+
+  if g:heresy_line_shortcuts == 1
+    " Move the current / selected line(s) up
+    inoremap <silent> <C-Up> <C-O>:m -2<CR>
+    snoremap <silent> <C-Up> <C-O>:m '<-2<CR>gv=gv<C-G>
+    " Move the current / selected line(s) down
+    inoremap <silent> <C-Down> <C-O>:m +1<CR>
+    snoremap <silent> <C-Down> <C-O>:m '>+1<CR>gv=gv<C-G>
+  endif
+
+  if g:heresy_pane_shortcuts == 1
+    " Move between splits, panes, windows, etc and close them
     inoremap <silent> <M-Left>  <C-O><C-W><Left>
     snoremap <silent> <M-Left>  <Esc><C-W><Left>
     nnoremap <silent> <M-Left>  <C-W><Left>
@@ -136,44 +169,12 @@ function! g:SetHeresyShortcuts()
 
     " This allows unsaved buffers to be kept in the background.
     set hidden
-
-    " CTRL+w to delete current pane-like things.
-    inoremap <silent> <C-W> <C-O>:call heresy#ClosePane()<CR>
-    snoremap <silent> <C-W> <C-O>:call heresy#ClosePane()<CR>
-    nnoremap <silent> <C-W> :call heresy#ClosePane()<CR>
   end
 
-  " Selecting, copy, paste, etc
-  if g:heresy_use_copypasting == 1
-    " One of those curious features of Vim: without `onemore` when pasting
-    " at the end of a line, pasted text gets put *before* the cursor.
-    set virtualedit=onemore
-    " NB. All these use the system clipboard.
-    inoremap <C-V> <C-O>:call heresy#Paste()<CR>
-    " The odd <Space><Backspace> here is because one-off Normal Mode commands
-    " don't seem to work as expected when some text is selected. Also just
-    " using <Backspace> on its own seems to cause weird behaviour too.
-    snoremap <C-V> <Space><Backspace><C-O>:call heresy#Paste()<CR>
-    cnoremap <C-V> <C-R>"
-    snoremap <C-C> <C-O>"+ygv
-    inoremap <C-C> <C-O>"+Y
-    snoremap <C-X> <C-O>"+xi
-    inoremap <C-X> <C-O>"+dd
-    " Select word under cursor
-    inoremap <C-D> <C-O>viw<C-G>
-    " Select current line
-    inoremap <C-L> <C-O>V<C-G>
-    " Append next line to selection
-    snoremap <C-L> <C-O>gj
-
-    " CTRL-A for selecting all text
-    inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
-    snoremap <C-A> <C-O><C-C>gggH<C-O>G
-  endif
-
-  " Indenting
-  if g:heresy_use_indenting == 1
-    " TODO: In Neovim TAB doesn't work in mswin selection mode, but SHIFT+TAB does??
+  " TODO: Shift+TAB doesn't work in insert mode, but does in selection mode??
+  " TODO: In Neovim TAB doesn't work in mswin selection mode, but SHIFT+TAB does??
+  if g:heresy_indentation_shortcuts == 1
+    " Indenting
     snoremap <Tab> <C-O>>gv
     inoremap <M-]> <C-T>
     snoremap <M-]> <C-O>>gv
@@ -183,53 +184,48 @@ function! g:SetHeresyShortcuts()
     snoremap <M-[> <C-O><gv
   endif
 
-  if g:heresy_use_finding == 1
-    " Find
-    inoremap <C-F> <C-O>/
-    " Find selected word under cursor
-    snoremap <C-F> <C-O>y/<C-R>"<CR>
-    " Find next
-    inoremap <F3> <C-O>n
-    " Find previous
-    inoremap <S-F3> <C-O>N
-    " Find and replace
-    inoremap <C-H> <C-O>:%s/[FIND]/[REPLACE]/g
+  if g:heresy_navigation_fixes == 1
+    " Fix HOME to go back to the first non-whitespace character of the line.
+    inoremap <silent> <Home> <C-O>^
+    " The same but for selection behaviour
+    inoremap <silent> <S-Home> <S-Left><C-G><C-O>^
+    snoremap <silent> <S-Home> <C-O>^
+
+    " Tweaks PageUp behaviour to get cursor to first line on top page
+    inoremap <silent> <PageUp> <C-O>:call heresy#PageUp()<CR>
   endif
 
-  " Undo/redo
-  if g:heresy_use_undoing == 1
-    " Use <M-o><C-Z> for native terminal backgrounding.
-    " The <Esc>s used in the `snoremap` commands seem to prevent the selection
-    " process itself being put in the undo history - so now the undo actually undoes
-    " the last *text* activity.
-    inoremap <silent> <C-Z> <C-O>u
-    snoremap <silent> <C-Z> <Esc><C-O>u
-    " Map CTRL+u as well for now just because by default it deletes the line above
-    " the cursor.
-    inoremap <silent> <C-U> <C-O>u
-    snoremap <silent> <C-U> <Esc><C-O>u
-    " Redo
-    inoremap <silent> <C-Y> <C-O><C-R>
-    snoremap <silent> <C-Y> <Esc><C-O><C-R>
+endfunction
+
+" TODO: Mention any unsaved buffers
+function! heresy#CloseVim()
+  let l:confirmed = confirm('Do you really want to quit Vim?', "&Yes\n&No", 2)
+  if l:confirmed == 1
+    quitall!
   endif
+endfunction
 
-  " Useful, but not necessarily core or conventional, shortcuts for manipulating
-  " text.
-  if g:heresy_use_text_tricks == 1
-    " CTRL+ALTt+k deletes the current line under the cursor
-    " TODO: Doesn't work in terminal vim, even with vim-fixkey
-    inoremap <silent> <C-M-K> <C-O>"_dd
+" Try to intuitively and intelligently close things like buffers, splits,
+" panes, quicklist, etc, basically anything that looks like a pane.
+function! heresy#ClosePane()
+  if s:IsEditableBuffer() == 1
+    " TODO: These aren't actually formally associated with a buffer, although
+    "       conceptually they often are (eg; linting errors, file search).
+    " Close any location lists on screen.
+    exe "lclose"
+    " Close any quickfix lists on screen.
+    exe "cclose"
 
-    " CTRL+ALT+d duplicates current line.
-    " NB. Uses the named 'd' register.
-    " TODO: Doesn't work in terminal vim, even with vim-fixkey
-    inoremap <silent> <C-M-D> <C-O>"dyy<C-O>"dp
-
-    " CTRL+DOWN/UP moves the current/selected line(s) up and down
-    inoremap <silent> <C-Up> <C-O>:m -2<CR>
-    snoremap <silent> <C-Up> <C-O>:m '<-2<CR>gv=gv<C-G>
-    inoremap <silent> <C-Down> <C-O>:m +1<CR>
-    snoremap <silent> <C-Down> <C-O>:m '>+1<CR>gv=gv<C-G>
+    if s:CountListedBuffers() > 1
+      " By default if the buffer is the only one on screen, closing it closes the
+      " tab/window. So this little trick does a switch to the next buffer,
+      " then closes the previous buffer.
+      exe "bp\|bd #"
+    else
+      quit
+    endif
+  else
+    quit
   endif
 endfunction
 
@@ -280,38 +276,6 @@ function! s:WrappedTextBehaviour()
   snoremap <buffer> <silent> <S-End> <C-O>g$
 endfunction
 
-" Try to intuitively and intelligently close things like buffers, splits,
-" panes, quicklist, etc, basically anything that looks like a pane.
-function! heresy#ClosePane()
-  if s:IsEditableBuffer() == 1
-    " TODO: These aren't actually formally associated with a buffer, although
-    "       conceptually they often are (eg; linting errors, file search).
-    " Close any location lists on screen.
-    exe "lclose"
-    " Close any quickfix lists on screen.
-    exe "cclose"
-
-    if s:CountListedBuffers() > 1
-      " By default if the buffer is the only one on screen, closing it closes the
-      " tab/window. So this little trick does a switch to the next buffer,
-      " then closes the previous buffer.
-      exe "bp\|bd #"
-    else
-      quit
-    endif
-  else
-    quit
-  endif
-endfunction
-
-" TODO: Mention any unsaved buffers
-function! heresy#ExitVim()
-  let l:confirmed = confirm('Do you really want to quit Vim?', "&Yes\n&No", 2)
-  if l:confirmed == 1
-    quitall!
-  endif
-endfunction
-
 function! heresy#GotoLine()
   let l:line_number = input('Goto line: ')
   execute line_number
@@ -339,11 +303,43 @@ endfunction
 function! g:heresy#StartHeresy()
   call s:InsertAndSelectionBehaviour()
 
-  if g:heresy_use_better_wrap_navigation == 1
+  if g:heresy_better_wrap_navigation == 1
     call s:SetWrappedTextNavigation()
   endif
 
-  if g:heresy_use_shortcuts == 1
-    call g:SetHeresyShortcuts()
+  if g:heresy_shortcuts == 1
+    call g:SetShortcuts()
   endif
 endfunction
+
+" ALT+; for command prompt
+" inoremap <M-;> <C-O>:
+" snoremap <M-;> <C-O>:
+" inoremap <M-c> <C-O>:
+" snoremap <M-c> <C-O>:
+" nnoremap <M-;> :
+" nnoremap <M-c> :
+
+" <ALT+o> replaces native <C-O> for one-time normal mode commands.
+" inoremap <M-o> <C-O>
+" snoremap <M-o> <C-O>
+
+" Select word under cursor
+" inoremap <C-D> <C-O>viw<C-G>
+" Select current line
+" inoremap <C-L> <C-O>V<C-G>
+" Append next line to selection
+" snoremap <C-L> <C-O>gj
+
+" CTRL-A for selecting all text
+" inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
+" snoremap <C-A> <C-O><C-C>gggH<C-O>G
+
+" CTRL+ALTt+k deletes the current line under the cursor
+" TODO: Doesn't work in terminal vim, even with vim-fixkey
+" inoremap <silent> <C-M-K> <C-O>"_dd
+
+" CTRL+ALT+d duplicates current line.
+" NB. Uses the named 'd' register.
+" TODO: Doesn't work in terminal vim, even with vim-fixkey
+" inoremap <silent> <C-M-D> <C-O>"dyy<C-O>"dp

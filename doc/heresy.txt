@@ -132,7 +132,7 @@ When adding a new binding of your own that needs Normal mode, you should use
 Overriding or disabling shortcuts in this plugin can be done in several
 ways. The simplest way is to use: >
 
-  let g:heresy_use_shortcuts = 0
+  let g:heresy_shortcuts = 0
   inoremap ... custom mapping ...
   call heresy#StartHeresy()
 <
@@ -144,18 +144,18 @@ Lastly shorcuts are also grouped roughly under the headings described above,
 so you may be able to disable one of the
 following: >
 
-  let g:heresy_use_general_app_shortcuts = 1
-  let g:heresy_use_pane_controls = 1
-  let g:heresy_use_copypasting = 1
-  let g:heresy_use_indenting = 1
-  let g:heresy_use_finding = 1
-  let g:heresy_use_undoing = 1
-  let g:heresy_use_text_tricks = 1
+  let g:heresy_app_shortcuts = 1
+  let g:heresy_copypaste_shortcuts = 1
+  let g:heresy_undo_shortcuts = 1
+  let g:heresy_find_shortcuts = 1
+  let g:heresy_line_shortcuts = 1
+  let g:heresy_pane_shortcuts = 1
+  let g:heresy_indentation_shortcuts = 1
 
   " Small fixes to HOME and PAGEUP behaviour
-  let g:heresy_use_editor_fixes = 1
+  let g:heresy_navigation_fixes = 1
   " Allows scrolling through wrapped lines one visual line at a time
-  let g:heresy_use_better_wrap_navigation = 1
+  let g:heresy_better_wrap_navigation = 1
 <
 ==============================================================================
 6. Known Issues                                     *vim-heresy-known-issues*

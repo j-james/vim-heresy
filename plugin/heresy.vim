@@ -7,17 +7,20 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+" Choose what groups of shortcuts to use (default: all)
+" 0 is off, 1 is on
+" 'shortcuts' controls all but 'better_wrap_navigation'
 let s:settings = {
-  \ 'use_general_app_shortcuts': 1,
-  \ 'use_editor_fixes': 1,
-  \ 'use_pane_controls': 1,
-  \ 'use_copypasting': 1,
-  \ 'use_indenting': 1,
-  \ 'use_finding': 1,
-  \ 'use_undoing': 1,
-  \ 'use_text_tricks': 1,
-  \ 'use_better_wrap_navigation': 1,
-  \ 'use_shortcuts': 1
+  \ 'shortcuts': 1,
+  \ 'app_shortcuts': 1,
+  \ 'copypaste_shortcuts': 1,
+  \ 'undo_shortcuts': 1,
+  \ 'find_shortcuts': 1,
+  \ 'line_shortcuts': 1,
+  \ 'pane_shortcuts': 1,
+  \ 'indentation_shortcuts': 1,
+  \ 'navigation_fixes': 1,
+  \ 'better_wrap_navigation': 1
 \}
 
 " Fetches existing values from user and sets defaults if not set.
