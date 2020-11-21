@@ -221,17 +221,22 @@ function! g:SetShortcuts()
 
 endfunction
 
-" TODO: Mention any unsaved buffers
 function! heresy#CloseVim()
-  let l:confirmed = confirm('Do you really want to quit Vim?', "&Yes\n&No", 2)
-  if l:confirmed == 1
-    quitall!
+  let l:check = execute(":ls")
+  if l:check =~ "+"
+    let l:confirmed = confirm('There are unsaved buffers. Do you really want to quit Vim?', "&Yes\n&No", 2)
+    if l:confirmed == 1
+      quitall!
+    endif
+  else
+    quitall
   endif
 endfunction
 
 " Try to intuitively and intelligently close things like buffers, splits,
 " panes, quicklist, etc, basically anything that looks like a pane.
 function! heresy#ClosePane()
+  let l:check = execute(":ls")
   if s:IsEditableBuffer() == 1
     " TODO: These aren't actually formally associated with a buffer, although
     "       conceptually they often are (eg; linting errors, file search).
@@ -245,6 +250,11 @@ function! heresy#ClosePane()
       " tab/window. So this little trick does a switch to the next buffer,
       " then closes the previous buffer.
       exe "bp\|bd #"
+    elseif l:check =~ "%a +"
+      let l:confirmed = confirm('Your active buffer is not saved. Close anyway?', "&Yes\n&No", 2)
+      if l:confirmed == 1
+	quit!
+      endif
     else
       quit
     endif
